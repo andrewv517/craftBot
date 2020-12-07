@@ -29,12 +29,19 @@ async def craft(ctx):
 
 
 @client.command()
-async def coinflip(ctx):
-    num = random.random()
-    if num < 0.5:
-        await ctx.send('Heads')
+async def coinflip(ctx, count=1):
+    heads = 0
+    tails = 0
+    for i in range(min(max(count if type(count) is int else 1, 1), 500)):
+        if random.random() < 0.5:
+            heads += 1
+        else:
+            tails += 1
+
+    if count == 1:
+        await ctx.send("Heads" if heads == 1 else "Tails")
     else:
-        await ctx.send('Tails')
+        await ctx.send("You flipped heads %d times and tails %d times" % (heads, tails))
 
 
 @client.command()
@@ -50,9 +57,11 @@ async def poll(ctx):
 async def pizza(ctx):
     await ctx.send("Pizza")
 
+
 @client.command()
 async def mungeSpam(ctx, times=1):
-    for i in range(min(max(times, 1), 10)):
+    for i in range(min(max(times if type(times) is int else 1, 1), 10)):
         await ctx.send("@everyone munge")
+
 
 client.run(TOKEN)
