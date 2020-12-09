@@ -62,6 +62,10 @@ async def pizza(ctx):
 async def mungeSpam(ctx, times=1):
     for i in range(min(max(times if type(times) is int else 1, 1), 10)):
         await ctx.send("@everyone munge")
+        
+@client.command()
+async def ban(ctx, arg):
+	await ctx.send("@everyone " arg " has been banned!")
 
 
 client.run(TOKEN)
