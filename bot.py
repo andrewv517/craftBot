@@ -3,6 +3,7 @@ import os
 
 import discord
 import random
+import sqlite3
 from dotenv import load_dotenv
 from discord.ext import commands
 
@@ -15,6 +16,15 @@ GUILD = os.getenv('DISCORD_GUILD')
 
 @client.event
 async def on_ready():
+    db = sqlite3.connect('main.sqlite')
+    cursor = db.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS main(
+        guild_id TEXT,
+        msg TEXT,
+        channel_id TEXT
+        )
+        ''')
     print('We have logged in as {0.user}'.format(client))
 
 
@@ -62,6 +72,11 @@ async def pizza(ctx):
 async def mungeSpam(ctx, times=1):
     for i in range(min(max(times if type(times) is int else 1, 1), 10)):
         await ctx.send("@everyone munge")
+
+
+@client.command()
+async def contribute(ctx):
+    await ctx.send('https://github.com/andrewv517/craftBot')
 
 
 client.run(TOKEN)
